@@ -1,4 +1,4 @@
-package com.giri.ai.loan_loanprequal;
+package com.giri.ai.loanprequal;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

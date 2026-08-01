@@ -1,4 +1,4 @@
-package com.giri.ai.loan_loanprequal;
+package com.giri.ai.loanprequal;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

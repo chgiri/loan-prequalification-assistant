@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package loanrisk;
+
+option java_multiple_files = true;
+option java_package = "com.giri.ai.loanprequal.grpc";
+option java_outer_classname = "LoanRiskProto";
+
+service LoanRiskScorer {
+  rpc ScoreLoan (LoanFeatures) returns (RiskScore);
+}
+
+message LoanFeatures {
+  double monthly_income = 1;
+  double existing_monthly_debt = 2;
+  double requested_loan_amount = 3;
+  int32 credit_score = 4;
+  double employment_years = 5;
+}
+
+message RiskScore {
+  double default_probability = 1;   // 0.0 - 1.0, model's estimated probability of default
+  string risk_band = 2;             // LOW / MEDIUM / HIGH, derived from the probability
+}
