@@ -1,0 +1,34 @@
+meta {
+  name: 03 - Rejected (Multiple Hard Rule Violations)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/loan/prequalify
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "description": "My income is $3000 a month and I have $2000 in monthly debt payments already. I've been at my current job for about a year. I want to borrow $300,000. My credit score is around 500."
+  }
+}
+
+docs {
+  Should trigger THREE separate hard-rule failures simultaneously: credit
+  score below minimum, debt-to-income ratio too high, and loan-to-income
+  ratio too high. All three should appear in decision.reasons together,
+  not just the first one encountered.
+
+  defaultProbability and riskBand should both be null in the response,
+  proving the rules engine short-circuited BEFORE the gRPC call to the
+  Python risk scorer ever happened. If you added the print() logging line
+  to server.py's ScoreLoan method, confirm nothing gets printed there for
+  this request.
+}

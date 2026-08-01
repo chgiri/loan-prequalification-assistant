@@ -1,0 +1,30 @@
+meta {
+  name: 02 - Needs Review (High Risk)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/api/loan/prequalify
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "description": "I make $6500 a month and have been at my job for 4 years. My monthly debt payments are about $800. I'd like to borrow $20,000 to renovate my kitchen. My credit score is 710."
+  }
+}
+
+docs {
+  Rules PASS (nothing disqualifying), but the ML risk score lands in the
+  HIGH band -> decision should be "NEEDS_REVIEW", not auto-rejected.
+
+  Expected defaultProbability ~0.536, riskBand "HIGH" (matches the values
+  verified directly against the Python gRPC service and the isolated
+  Java test during development).
+}

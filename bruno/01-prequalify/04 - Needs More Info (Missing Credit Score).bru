@@ -1,0 +1,32 @@
+meta {
+  name: 04 - Needs More Info (Missing Credit Score)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}/api/loan/prequalify
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "description": "I want to borrow $50,000 for a home renovation. I make decent money."
+  }
+}
+
+docs {
+  Deliberately vague description. extractedApplication.creditScore should
+  come back null (NOT a guessed number - this is the real proof extraction
+  isn't hallucinating values it wasn't told).
+
+  Rules engine should catch the missing credit score (and likely missing
+  employment status too) -> decision.decision = "NEEDS_MORE_INFO", listing
+  exactly which fields are missing. Should also never reach the gRPC risk
+  scorer, same as the rejection case.
+}

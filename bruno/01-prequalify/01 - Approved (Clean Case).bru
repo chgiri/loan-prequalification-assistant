@@ -1,0 +1,32 @@
+meta {
+  name: 01 - Approved (Clean Case)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/api/loan/prequalify
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "description": "Hi, I make about $8000 a month, been at my job 6 years. I pay around $500 a month on existing debts. I want to borrow $10,000 for a kitchen renovation. My credit score is around 750."
+  }
+}
+
+docs {
+  End-to-end happy path: extraction -> rules PASS -> risk score (should be
+  LOW/MEDIUM) -> APPROVED -> grounded explanation.
+
+  Check three things in the response:
+  1. extractedApplication correctly pulls out 8000, 6, 500, 10000, 750,
+     and something like "kitchen renovation"
+  2. decision.decision is "APPROVED" with a real (non-null) defaultProbability
+  3. explanation reads naturally and only references the actual numbers/decision
+}

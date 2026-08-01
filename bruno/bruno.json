@@ -1,0 +1,6 @@
+{
+  "version": "1",
+  "name": "Loan Pre-Qualification Assistant",
+  "type": "collection",
+  "ignore": ["node_modules", ".git"]
+}
