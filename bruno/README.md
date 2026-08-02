@@ -19,7 +19,7 @@ retired once each piece was individually verified.
    source venv/Scripts/activate
    python server.py
 
-   # Terminal 2 — Java app (from loan-prequalification-assistant)
+   # Terminal 2 — Java app (from ai-loan-underwriting)
    mvn spring-boot:run
    ```
 

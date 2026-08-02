@@ -11,9 +11,9 @@
 	</parent>
 
 	<groupId>com.giri.ai</groupId>
-	<artifactId>loan-prequalification-assistant</artifactId>
+	<artifactId>ai-loan-underwriting</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>loan-prequalification-assistant</name>
+	<name>ai-loan-underwriting</name>
 
 	<properties>
 		<java.version>21</java.version>

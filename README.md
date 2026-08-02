@@ -2,7 +2,7 @@
 
 A GenAI-powered loan pre-qualification service built with Spring Boot and Spring AI, combining structured extraction, a deterministic hard-rules engine, and a machine-learned risk score — with the LLM's role deliberately limited to intake (extraction) and communication (explanation), never the decision itself.
 
-Built as a second, distinct GenAI portfolio project (alongside [`banking-faq-assistant`](../banking-faq-assistant)), introducing techniques the first project doesn't use: structured output extraction from free text, a cross-language integration with a Python machine learning service over gRPC, and a decision pipeline where an LLM communicates a result it did not compute.
+Built as a second, distinct GenAI portfolio project (alongside [`banking-ai-agent`](../banking-ai-agent)), introducing techniques the first project doesn't use: structured output extraction from free text, a cross-language integration with a Python machine learning service over gRPC, and a decision pipeline where an LLM communicates a result it did not compute.
 
 ## What It Does
 
@@ -138,7 +138,7 @@ Content-Type: application/json
 ## Configuration Reference
 
 ```properties
-spring.application.name=loan-prequalification-assistant
+spring.application.name=ai-loan-underwriting
 server.port=8082
 
 spring.ai.google.genai.api-key=${GEMINI_API_KEY}
@@ -151,11 +151,11 @@ No vector store, no embeddings, no pgvector — this project does no retrieval; 
 
 - **Hard rules are absolute and evaluated first.** `LoanDecisionService` never calls the ML scorer if the rules engine already produced `REJECTED` or `NEEDS_MORE_INFO` — a statistical score should never be able to override a disqualifying rule, and this also avoids an unnecessary gRPC call (and, in a real system, a real inference cost) for applications that were always going to be rejected.
 - **Each rule is its own method, returning `Optional<String>`.** Independently testable and independently auditable — a rejection can be traced to the exact rule and threshold that fired, rather than a monolithic conditional block. All applicable rule violations are collected and returned together, not just the first one encountered.
-- **`HIGH` risk band routes to human review, not automatic rejection.** Mirrors the same philosophy as `banking-faq-assistant`'s propose/confirm transfer flow: automate the clear-cut cases, add a checkpoint for the ambiguous or high-stakes ones, rather than fully automating every outcome.
+- **`HIGH` risk band routes to human review, not automatic rejection.** Mirrors the same philosophy as `banking-ai-agent`'s propose/confirm transfer flow: automate the clear-cut cases, add a checkpoint for the ambiguous or high-stakes ones, rather than fully automating every outcome.
 - **Explanation generation is tightly grounded.** `LoanExplanationService`'s system prompt explicitly instructs the model to use only the decision and reasons it's given — verified during development by checking that rejection explanations list only the real, exact reasons (and numbers) produced by the rules engine, not paraphrased or embellished ones.
 - **Extraction is instructed not to guess.** `LoanExtractionService` explicitly tells the model to leave a field `null` rather than infer a value the customer didn't state — verified with a deliberately vague test description that correctly produced a `null` credit score rather than a fabricated one.
 - **gRPC over REST for the cross-language boundary, chosen deliberately.** A stronger, schema-enforced contract than JSON for a numeric ML payload; the same reasoning also made this a better portfolio-range choice than repeating the REST pattern already used for `banking-mcp-server`.
-- **`ChatClient.Builder` is prototype-scoped**, same fix applied here as in `banking-faq-assistant` — `LoanExtractionService` and `LoanExplanationService` each get their own independent builder instance, so nothing configured for one (advisors, tools) can leak into the other.
+- **`ChatClient.Builder` is prototype-scoped**, same fix applied here as in `banking-ai-agent` — `LoanExtractionService` and `LoanExplanationService` each get their own independent builder instance, so nothing configured for one (advisors, tools) can leak into the other.
 
 ## Known Limitations (Honest Scope)
 
@@ -163,13 +163,13 @@ No vector store, no embeddings, no pgvector — this project does no retrieval; 
 - **Hard-rule thresholds are illustrative, not sourced from any real lender's underwriting policy.** Credit score floor, debt-to-income cap, and loan-to-income cap were chosen to produce a range of realistic-looking outcomes for demonstration, not derived from actual regulatory or institutional standards.
 - **`NEEDS_REVIEW` is a label, not a workflow.** There's no queue, no analyst-facing UI, no routing mechanism for a human to actually pick up a flagged application — the decision correctly identifies that a case needs review, but nothing downstream acts on that yet.
 - **The gRPC connection uses plaintext (`usePlaintext()`), no TLS.** Fine for local development between two services on one machine; a real deployment would need to secure this channel.
-- **No persistence.** Every request is stateless — no application history, no audit log of past decisions, unlike `banking-faq-assistant`'s Postgres-backed conversation memory.
+- **No persistence.** Every request is stateless — no application history, no audit log of past decisions, unlike `banking-ai-agent`'s Postgres-backed conversation memory.
 - **No authentication on the endpoint.** Anyone who can reach the service can submit an application.
 
 ## Related Projects
 
 - **[`loan-risk-scorer`](../loan-risk-scorer)** — the Python gRPC service this project calls for ML-based risk scoring. Deliberately a separate repository/runtime (Java vs. Python), following the same "split when there's a genuine architectural reason" principle used for `banking-mcp-server` — here, the reason is a real cross-language ML integration, not just organizational convenience.
-- **[`banking-faq-assistant`](../banking-faq-assistant)** — the first project in this portfolio; RAG, document Q&A, tool calling, and orchestration. This project deliberately covers different GenAI techniques (structured extraction, decision-grounded explanation) rather than repeating that project's RAG-centric approach.
+- **[`banking-ai-agent`](../banking-ai-agent)** — the first project in this portfolio; RAG, document Q&A, tool calling, and orchestration. This project deliberately covers different GenAI techniques (structured extraction, decision-grounded explanation) rather than repeating that project's RAG-centric approach.
 
 ## Testing
 
@@ -180,7 +180,7 @@ A [Bruno](https://www.usebruno.com/) collection covering all four decision outco
 - Replace the synthetic training dataset with a properly researched, more realistic set of lending heuristics — or clearly document specific real-world underwriting guidelines the rules are modeled on
 - Build an actual review queue/workflow for `NEEDS_REVIEW` applications, rather than leaving it as a terminal label
 - Add TLS to the gRPC channel and basic authentication to the REST endpoint
-- Persist applications and decisions for audit purposes, mirroring `banking-faq-assistant`'s approach to conversation memory
+- Persist applications and decisions for audit purposes, mirroring `banking-ai-agent`'s approach to conversation memory
 - Expose this project via MCP, following the same wrapping pattern as `banking-mcp-server`, if parity across projects becomes a goal
 
 ## A Note on Dependency Churn
