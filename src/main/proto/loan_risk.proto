@@ -3,7 +3,7 @@ syntax = "proto3";
 package loanrisk;
 
 option java_multiple_files = true;
-option java_package = "com.giri.ai.loanprequal.grpc";
+option java_package = "com.giri.ai.loanunderwrite.grpc";
 option java_outer_classname = "LoanRiskProto";
 
 service LoanRiskScorer {

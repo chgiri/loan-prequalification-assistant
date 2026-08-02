@@ -1,4 +1,4 @@
-package com.giri.ai.loanprequal.decision;
+package com.giri.ai.loanunderwrite.decision;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;

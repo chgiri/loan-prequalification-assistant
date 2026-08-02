@@ -1,4 +1,4 @@
-package com.giri.ai.loanprequal;
+package com.giri.ai.loanunderwrite;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

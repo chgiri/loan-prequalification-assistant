@@ -1,9 +1,9 @@
-package com.giri.ai.loanprequal.service;
+package com.giri.ai.loanunderwrite.service;
 
-import com.giri.ai.loanprequal.decision.LoanDecisionResult;
-import com.giri.ai.loanprequal.decision.LoanDecisionService;
-import com.giri.ai.loanprequal.decision.LoanExplanationService;
-import com.giri.ai.loanprequal.model.LoanApplication;
+import com.giri.ai.loanunderwrite.decision.LoanDecisionResult;
+import com.giri.ai.loanunderwrite.decision.LoanDecisionService;
+import com.giri.ai.loanunderwrite.decision.LoanExplanationService;
+import com.giri.ai.loanunderwrite.model.LoanApplication;
 import org.springframework.stereotype.Service;
 
 @Service

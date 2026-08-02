@@ -1,4 +1,4 @@
-package com.giri.ai.loanprequal.rules;
+package com.giri.ai.loanunderwrite.rules;
 
 public enum RuleOutcome {
     PASS,            // no hard rule violations — eligible to proceed to risk scoring

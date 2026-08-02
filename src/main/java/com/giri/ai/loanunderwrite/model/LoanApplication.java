@@ -1,4 +1,4 @@
-package com.giri.ai.loanprequal.model;
+package com.giri.ai.loanunderwrite.model;
 
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 

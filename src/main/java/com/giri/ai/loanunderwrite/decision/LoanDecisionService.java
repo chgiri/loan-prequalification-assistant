@@ -1,11 +1,11 @@
-package com.giri.ai.loanprequal.decision;
+package com.giri.ai.loanunderwrite.decision;
 
-import com.giri.ai.loanprequal.grpc.LoanRiskClient;
-import com.giri.ai.loanprequal.grpc.RiskScore;
-import com.giri.ai.loanprequal.model.LoanApplication;
-import com.giri.ai.loanprequal.rules.LoanEligibilityRulesEngine;
-import com.giri.ai.loanprequal.rules.RuleCheckResult;
-import com.giri.ai.loanprequal.rules.RuleOutcome;
+import com.giri.ai.loanunderwrite.grpc.LoanRiskClient;
+import com.giri.ai.loanunderwrite.grpc.RiskScore;
+import com.giri.ai.loanunderwrite.model.LoanApplication;
+import com.giri.ai.loanunderwrite.rules.LoanEligibilityRulesEngine;
+import com.giri.ai.loanunderwrite.rules.RuleCheckResult;
+import com.giri.ai.loanunderwrite.rules.RuleOutcome;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

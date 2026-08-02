@@ -1,4 +1,4 @@
-package com.giri.ai.loanprequal.rules;
+package com.giri.ai.loanunderwrite.rules;
 
 import java.util.List;
 

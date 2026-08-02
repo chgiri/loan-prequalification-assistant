@@ -1,6 +1,6 @@
-package com.giri.ai.loanprequal.service;
+package com.giri.ai.loanunderwrite.service;
 
-import com.giri.ai.loanprequal.model.LoanApplication;
+import com.giri.ai.loanunderwrite.model.LoanApplication;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 

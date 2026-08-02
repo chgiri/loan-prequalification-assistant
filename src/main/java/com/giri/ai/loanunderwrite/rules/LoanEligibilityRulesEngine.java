@@ -1,6 +1,6 @@
-package com.giri.ai.loanprequal.rules;
+package com.giri.ai.loanunderwrite.rules;
 
-import com.giri.ai.loanprequal.model.LoanApplication;
+import com.giri.ai.loanunderwrite.model.LoanApplication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

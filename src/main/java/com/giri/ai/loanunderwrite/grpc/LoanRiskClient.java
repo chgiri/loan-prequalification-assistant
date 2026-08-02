@@ -1,6 +1,6 @@
-package com.giri.ai.loanprequal.grpc;
+package com.giri.ai.loanunderwrite.grpc;
 
-import com.giri.ai.loanprequal.model.LoanApplication;
+import com.giri.ai.loanunderwrite.model.LoanApplication;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.stereotype.Component;
