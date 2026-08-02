@@ -27,7 +27,7 @@ This is the central design principle of the whole project, not an incidental det
 | LLM (extraction + explanation) | Google Gemini — `gemini-3.5-flash` |
 | Structured Output | Spring AI `ChatClient.entity()` |
 | Cross-Service Integration | gRPC (`grpc-java` 1.82.1) + Protocol Buffers |
-| ML Risk Scoring | Separate Python service — see [`loan-risk-scorer`](../loan-risk-scorer) |
+| ML Risk Scoring | Separate Python service — see [`loan-underwriting-ml`](../loan-underwriting-ml) |
 | Build Tool | Maven |
 
 ## Architecture
@@ -51,7 +51,7 @@ NEEDS_MORE_INFO    AUTO_REJECT        PASS
    │                   │                │
    │                   │                ▼
    │                   │      ┌───────────────────┐
-   │                   │      │  LoanRiskClient   │──gRPC──► loan-risk-scorer (Python)
+   │                   │      │  LoanRiskClient   │──gRPC──► loan-underwriting-ml (Python)
    │                   │      └─────────┬─────────┘          logistic regression model
    │                   │                │  RiskScore(probability, band)
    │                   │                ▼
@@ -74,7 +74,7 @@ The rules engine and the ML risk score are two independent decision-making layer
 ### Prerequisites
 
 - Java 21, Maven
-- Python 3.11+ with the [`loan-risk-scorer`](../loan-risk-scorer) service runnable (see that project's own README)
+- Python 3.11+ with the [`loan-underwriting-ml`](../loan-underwriting-ml) service runnable (see that project's own README)
 - A Google Gemini API key ([Google AI Studio](https://aistudio.google.com/app/apikey))
 
 ### 1. Configure environment variables
@@ -88,7 +88,7 @@ GEMINI_API_KEY=your-gemini-api-key
 ### 2. Start both services
 
 ```bash
-# Terminal 1 — Python gRPC risk scorer (from loan-risk-scorer)
+# Terminal 1 — Python gRPC risk scorer (from loan-underwriting-ml)
 source venv/Scripts/activate
 python server.py
 
@@ -159,7 +159,7 @@ No vector store, no embeddings, no pgvector — this project does no retrieval; 
 
 ## Known Limitations (Honest Scope)
 
-- **The ML model is trained on synthetic data, not real historical loan outcomes.** `loan-risk-scorer`'s training script generates its own "ground truth" labels from a hand-written formula with injected noise — this demonstrates the technique and integration pattern end to end, but the model has not learned anything about real-world lending risk. See that project's own README for detail.
+- **The ML model is trained on synthetic data, not real historical loan outcomes.** `loan-underwriting-ml`'s training script generates its own "ground truth" labels from a hand-written formula with injected noise — this demonstrates the technique and integration pattern end to end, but the model has not learned anything about real-world lending risk. See that project's own README for detail.
 - **Hard-rule thresholds are illustrative, not sourced from any real lender's underwriting policy.** Credit score floor, debt-to-income cap, and loan-to-income cap were chosen to produce a range of realistic-looking outcomes for demonstration, not derived from actual regulatory or institutional standards.
 - **`NEEDS_REVIEW` is a label, not a workflow.** There's no queue, no analyst-facing UI, no routing mechanism for a human to actually pick up a flagged application — the decision correctly identifies that a case needs review, but nothing downstream acts on that yet.
 - **The gRPC connection uses plaintext (`usePlaintext()`), no TLS.** Fine for local development between two services on one machine; a real deployment would need to secure this channel.
@@ -168,7 +168,7 @@ No vector store, no embeddings, no pgvector — this project does no retrieval; 
 
 ## Related Projects
 
-- **[`loan-risk-scorer`](../loan-risk-scorer)** — the Python gRPC service this project calls for ML-based risk scoring. Deliberately a separate repository/runtime (Java vs. Python), following the same "split when there's a genuine architectural reason" principle used for `banking-mcp-server` — here, the reason is a real cross-language ML integration, not just organizational convenience.
+- **[`loan-underwriting-ml`](../loan-underwriting-ml)** — the Python gRPC service this project calls for ML-based risk scoring. Deliberately a separate repository/runtime (Java vs. Python), following the same "split when there's a genuine architectural reason" principle used for `banking-mcp-server` — here, the reason is a real cross-language ML integration, not just organizational convenience.
 - **[`banking-ai-agent`](../banking-ai-agent)** — the first project in this portfolio; RAG, document Q&A, tool calling, and orchestration. This project deliberately covers different GenAI techniques (structured extraction, decision-grounded explanation) rather than repeating that project's RAG-centric approach.
 
 ## Testing
@@ -185,4 +185,4 @@ A [Bruno](https://www.usebruno.com/) collection covering all four decision outco
 
 ## A Note on Dependency Churn
 
-Setting up `loan-risk-scorer`'s Python environment on Python 3.14 (a very new release at the time of building this) surfaced two separate compatibility gaps: `grpcio`/`grpcio-tools` needed a version bump for Python 3.14 wheel support, and an initial `scikit-learn` pin (`1.5.2`) predated 3.14 wheels entirely, forcing a failed source compilation before being corrected to `>=1.9.0`. Separately, on the Java side, pinning individual `io.grpc` artifact versions without a BOM led to a transitive `grpc-core` version conflict (`NoSuchMethodError` at runtime) — resolved by importing `grpc-bom`, the same pattern already used for `spring-ai-bom`. Left documented here rather than smoothed over, since managing dependency compatibility across a polyglot, bleeding-edge stack is itself a real skill this project ended up demonstrating.
+Setting up `loan-underwriting-ml`'s Python environment on Python 3.14 (a very new release at the time of building this) surfaced two separate compatibility gaps: `grpcio`/`grpcio-tools` needed a version bump for Python 3.14 wheel support, and an initial `scikit-learn` pin (`1.5.2`) predated 3.14 wheels entirely, forcing a failed source compilation before being corrected to `>=1.9.0`. Separately, on the Java side, pinning individual `io.grpc` artifact versions without a BOM led to a transitive `grpc-core` version conflict (`NoSuchMethodError` at runtime) — resolved by importing `grpc-bom`, the same pattern already used for `spring-ai-bom`. Left documented here rather than smoothed over, since managing dependency compatibility across a polyglot, bleeding-edge stack is itself a real skill this project ended up demonstrating.

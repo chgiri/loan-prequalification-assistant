@@ -15,7 +15,7 @@ retired once each piece was individually verified.
 3. **Start both services before running any request:**
 
    ```bash
-   # Terminal 1 — Python gRPC risk scorer (from loan-risk-scorer)
+   # Terminal 1 — Python gRPC risk scorer (from loan-underwriting-ml)
    source venv/Scripts/activate
    python server.py
 
@@ -48,7 +48,7 @@ For every response, check three layers independently, not just whether a
 
 ## Not Covered Here
 
-`loan-risk-scorer`'s scoring logic is exposed over gRPC on port 50051, not
+`loan-underwriting-ml`'s scoring logic is exposed over gRPC on port 50051, not
 plain REST/JSON, so it isn't part of this HTTP-based collection. It has its
 own separate Bruno gRPC collection (Bruno added gRPC support in v2.10.0),
 using server reflection enabled on `server.py` for method discovery. See
