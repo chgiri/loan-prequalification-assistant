@@ -14,10 +14,10 @@ public class LoanController {
         this.underwritingService = underwritingService;
     }
 
-    record PrequalifyRequest(String description) {}
+    record UnderwritingRequest(String description) {}
 
-    @PostMapping("/prequalify")
-    public UnderwritingResult prequalify(@RequestBody PrequalifyRequest request) {
-        return underwritingService.prequalify(request.description());
+    @PostMapping("/underwrite")
+    public UnderwritingResult underwrite(@RequestBody UnderwritingRequest request) {
+        return underwritingService.underwrite(request.description());
     }
 }

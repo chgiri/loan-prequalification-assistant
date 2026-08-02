@@ -1,6 +1,6 @@
-# Loan Pre-Qualification Assistant — Bruno Collection
+# AI Loan Underwriting — Bruno Collection
 
-Covers the one real endpoint (`POST /api/loan/prequalify`), exercised across
+Covers the one real endpoint (`POST /api/loan/underwrite`), exercised across
 all four possible decision outcomes: APPROVED, NEEDS_REVIEW, REJECTED, and
 NEEDS_MORE_INFO. Each request is a full end-to-end run through extraction ->
 hard rules -> ML risk scoring -> LLM explanation, not an isolated unit test —

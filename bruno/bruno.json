@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "Loan Pre-Qualification Assistant",
+  "name": "AI Loan Underwriting",
   "type": "collection",
   "ignore": ["node_modules", ".git"]
 }

@@ -1,6 +1,6 @@
-# Loan Pre-Qualification Assistant
+# AI Loan Underwriting
 
-A GenAI-powered loan pre-qualification service built with Spring Boot and Spring AI, combining structured extraction, a deterministic hard-rules engine, and a machine-learned risk score — with the LLM's role deliberately limited to intake (extraction) and communication (explanation), never the decision itself.
+A GenAI-powered loan underwriting service built with Spring Boot and Spring AI, combining structured extraction, a deterministic hard-rules engine, and a machine-learned risk score — with the LLM's role deliberately limited to intake (extraction) and communication (explanation), never the decision itself.
 
 Built as a second, distinct GenAI portfolio project (alongside [`banking-ai-agent`](../banking-ai-agent)), introducing techniques the first project doesn't use: structured output extraction from free text, a cross-language integration with a Python machine learning service over gRPC, and a decision pipeline where an LLM communicates a result it did not compute.
 
@@ -100,10 +100,10 @@ The Java app runs on port `8082`; the Python gRPC service listens on port `50051
 
 ## API Endpoint
 
-### Pre-Qualify a Loan Applicant
+### Underwrite a Loan Applicant
 
 ```
-POST /api/loan/prequalify
+POST /api/loan/underwrite
 Content-Type: application/json
 
 {

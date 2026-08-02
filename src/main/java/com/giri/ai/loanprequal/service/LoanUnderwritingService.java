@@ -27,7 +27,7 @@ public class LoanUnderwritingService {
             String explanation
     ) {}
 
-    public UnderwritingResult prequalify(String customerDescription) {
+    public UnderwritingResult underwrite(String customerDescription) {
         LoanApplication application = extractionService.extract(customerDescription);
         LoanDecisionResult decision = decisionService.decide(application);
         String explanation = explanationService.explain(decision);

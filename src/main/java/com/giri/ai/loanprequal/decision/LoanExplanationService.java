@@ -17,7 +17,7 @@ public class LoanExplanationService {
 
         return chatClient.prompt()
                 .system("""
-                    You are a loan pre-qualification assistant. Explain the decision below to the
+                    You are a loan underwriting assistant. Explain the decision below to the
                     applicant in clear, respectful, plain language.
 
                     Use ONLY the decision and reasons provided — do not invent, assume, or add any
